@@ -1,0 +1,38 @@
+---
+- name: Install and Confugiure Apache HTTPD
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - name: Install Apache httpd
+      yum:
+        name: httpd
+        state: present
+
+    - name: Start and enable httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+
+    - name: Open http port and firewall
+      firewalld:
+        service: http
+        permanent: yes
+        state: enabled
+        immediate: yes
+
+    - name: Deploy custom web page
+      copy:
+        dest: /var/www/html/index.html
+        content: |
+          <html>
+          <body>
+          <h1>Apache web server is successfully deployed</h1>
+          <h2>Using Ansible Automation</h2>
+          <p>Created by Jagan</p>
+          </body>
+          </html>
+
+
