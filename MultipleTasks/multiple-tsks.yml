@@ -1,0 +1,41 @@
+---
+- name: Create Group, users, directories, and installin packages
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Creating Group
+      group:
+        name: Table
+        state: present
+
+    - name: Creating Users
+      user:
+        name: "{{item}}"
+        state: present
+
+      loop:
+        - dev1
+        - dev2
+        - dev3
+
+    - name: Creating Directories
+      file:
+        path: "/opt/{{item}}"
+        state: directory
+
+      loop:
+        - dev1
+        - dev2
+        - dev3
+
+    - name: Installing Packages
+      yum:
+        name: "{{item}}"
+        state: present
+
+      loop:
+        - net-tools
+        - nano
+        - curl
+  
